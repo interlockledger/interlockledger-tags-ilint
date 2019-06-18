@@ -33,7 +33,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 using System.IO;
 using System.Threading;
 
-namespace InterlockLedger.ILInt
+namespace InterlockLedger
 {
     public static class StreamExtensions
     {
