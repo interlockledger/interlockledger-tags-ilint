@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+      <Authors>Rafael Teixeira</Authors>
+      <Company>InterlockLedger Network</Company>
+      <Product>InterlockLedger</Product>
+      <Description>This library implements the basic ILInt encoding/decoding.</Description>
+      <Copyright>Copyright (c) 2017-2019 InterlockLedger Network</Copyright>
+      <PackageLicenseUrl></PackageLicenseUrl>
+      <PackageProjectUrl>https://interlockledger.network/</PackageProjectUrl>
+      <RepositoryUrl>https://github.com/interlockledger/peer2peer.git</RepositoryUrl>
+      <RepositoryType>git</RepositoryType>
+      <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+      <PackageReleaseNotes>Migration from InterlockLedger.Peer2Peer</PackageReleaseNotes>
+      <LangVersion>latest</LangVersion>
+      <PackageLicenseFile>LICENSE</PackageLicenseFile>
+  </PropertyGroup>
+    <ItemGroup>
+        <None Include="..\LICENSE">
+            <Pack>True</Pack>
+            <PackagePath></PackagePath>
+        </None>
+    </ItemGroup>
+</Project>
