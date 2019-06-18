@@ -40,6 +40,17 @@ namespace InterlockLedger.ILInt
         public const int ILINT_BASE = 0xF8;
         public const ulong ILINT_MAX = ulong.MaxValue - ILINT_BASE;
 
+        public static byte[] AsILInt(this ulong value) {
+            var size = value.ILIntSize();
+            return value.ILIntEncode(new byte[size], 0, size);
+        }
+
+        public static ulong ILIntDecode(this byte[] buffer) => ILIntDecode(new MemoryStream(buffer, 0, buffer.Length));
+
+        public static ulong ILIntDecode(this byte[] buffer, int index, int count) => ILIntDecode(new MemoryStream(buffer, index, count));
+
+        public static ulong ILIntDecode(this Stream stream) => ILIntDecode(() => stream.ReadSingleByte());
+
         public static ulong ILIntDecode(Func<byte> readByte) {
             ulong value = 0;
             var nextByte = readByte();
@@ -56,7 +67,7 @@ namespace InterlockLedger.ILInt
         public static byte[] ILIntEncode(this ulong value, byte[] buffer, int offset, int count) {
             ILIntEncode(value, b => {
                 if (--count < 0)
-                    throw new InvalidDataException("Buffer too small!!!");
+                    throw new TooFewBytesException();
                 buffer[offset++] = b;
             });
             return buffer;
