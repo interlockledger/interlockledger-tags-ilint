@@ -9,9 +9,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Setup .NET Core
+    - name: Setup .NET Core 2.2
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.0.101
+        dotnet-version: 2.2.207
+    - name: Install additional dotnet 3.0
+      run: sudo apt-get install dotnet-sdk-3.0
     - name: Build with dotnet
       run: dotnet build --configuration Release
+    - name: Test with dotnet
+      run: dotnet test --configuration Release --no-build
