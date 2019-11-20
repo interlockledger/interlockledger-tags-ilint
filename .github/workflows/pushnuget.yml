@@ -1,0 +1,27 @@
+name: .NET Core
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Setup .NET Core 2.2
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 2.2.207
+    - name: Install additional dotnet 3.0
+      run: sudo apt-get install dotnet-sdk-3.0
+    - name: Build with dotnet
+      run: dotnet build --configuration Release
+    - name: Test with dotnet
+      run: dotnet test --configuration Release --no-build
+    - name: Pack nuget
+      run: dotnet pack -o .nugets/
+    - name: Push nuget
+      run: dotnet nuget push .nugets/*.nupkg -s https://nuget.pkg.github.com/interlockledger/index.json -k ${{ secrets.GITHUB_TOKEN }}
