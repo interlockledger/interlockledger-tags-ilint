@@ -5,17 +5,17 @@
         <Authors>Rafael Teixeira</Authors>
         <Company>InterlockLedger Network</Company>
         <Product>InterlockLedger</Product>
-        <Description>This library implements the basic ILInt encoding/decoding.</Description>
+        <Description>This library implements the basic (InterlockLedger Integer) ILInt encoding/decoding.</Description>
         <Copyright>Copyright (c) 2017-2019 InterlockLedger Network</Copyright>
         <PackageLicenseUrl></PackageLicenseUrl>
         <PackageProjectUrl>https://interlockledger.network/</PackageProjectUrl>
-        <RepositoryUrl>https://github.com/interlockledger/peer2peer.git</RepositoryUrl>
+        <RepositoryUrl>https://github.com/interlockledger/ILInt.git</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <PackageReleaseNotes>namespace fix</PackageReleaseNotes>
+        <PackageReleaseNotes>Repository URL fix for packaging</PackageReleaseNotes>
         <LangVersion>latest</LangVersion>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
-        <Version>1.1.1</Version>
+        <Version>1.1.2</Version>
     </PropertyGroup>
     <ItemGroup>
         <None Include="..\LICENSE">
@@ -27,7 +27,7 @@
         <ItemGroup>
             <NugetPackages Include="$(PackageOutputAbsolutePath)\*.nupkg" />
         </ItemGroup>
-        <Message Importance="high" Text="Publish to Local Nugets Folder '$(INTERLOCK_LOCAL_NUGETS_FOLDER)'"/>
+        <Message Importance="high" Text="Publish to Local Nugets Folder '$(INTERLOCK_LOCAL_NUGETS_FOLDER)'" />
         <Copy DestinationFolder="$(INTERLOCK_LOCAL_NUGETS_FOLDER)" SourceFiles="@(NugetPackages)" ContinueOnError="true" SkipUnchangedFiles="false" />
     </Target>
 </Project>

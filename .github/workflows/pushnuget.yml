@@ -17,6 +17,8 @@ jobs:
         dotnet-version: 2.2.207
     - name: Install additional dotnet 3.0
       run: sudo apt-get install dotnet-sdk-3.0
+    - name: Setup Nuget.Config
+      run: sed -e "s/GH_TOKEN/${{ secrets.RegistryToken }}/" NuGet.Config.template > NuGet.Config
     - name: Build with dotnet
       run: dotnet build --configuration Release -v:m
     - name: Test with dotnet
@@ -24,4 +26,4 @@ jobs:
     - name: Pack nuget
       run: dotnet pack -o `pwd`/.nugets --configuration Release --no-build -v:m
     - name: Push nuget
-      run:  sed -e "s/GH_TOKEN/${{ secrets.RegistryToken }}/" NuGet.Config.template > NuGet.Config && dotnet nuget push `pwd`/.nugets/*.nupkg -s GitHub
+      run: dotnet nuget push `pwd`/.nugets/*.nupkg -s GitHub
