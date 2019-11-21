@@ -33,7 +33,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 using NUnit.Framework;
 using System;
 
-namespace InterlockLedger.ILInt
+namespace InterlockLedger.Tags
 {
     [TestFixture]
     public class UnitTestILIntReader

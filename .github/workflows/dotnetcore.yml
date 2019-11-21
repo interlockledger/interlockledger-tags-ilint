@@ -15,7 +15,5 @@ jobs:
         dotnet-version: 2.2.207
     - name: Install additional dotnet 3.0
       run: sudo apt-get install dotnet-sdk-3.0
-    - name: Build with dotnet
-      run: dotnet build --configuration Release
-    - name: Test with dotnet
-      run: dotnet test --configuration Release --no-build
+    - name: Build and test with dotnet
+      run: dotnet test --configuration Release -v:m

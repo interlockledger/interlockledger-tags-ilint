@@ -33,7 +33,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 using System;
 using System.IO;
 
-namespace InterlockLedger.ILInt
+namespace InterlockLedger.Tags
 {
     public static class ILIntHelpers
     {

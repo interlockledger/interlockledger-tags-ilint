@@ -32,7 +32,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 using NUnit.Framework;
 
-namespace InterlockLedger.ILInt
+namespace InterlockLedger.Tags
 {
     [TestFixture]
     public class UnitTestILIntHelpers

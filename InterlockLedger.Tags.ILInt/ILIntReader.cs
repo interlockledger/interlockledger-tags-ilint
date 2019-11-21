@@ -32,7 +32,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 using System;
 
-namespace InterlockLedger.ILInt
+namespace InterlockLedger.Tags
 {
     public class ILIntReader
     {

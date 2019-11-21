@@ -1,3 +1,3 @@
-# InterlockLedger.ILInt Library
+# InterlockLedger.Tags.ILInt Library
 
-This library implements the basic ILInt encoding/decoding.
+This library implements the basic ILInt (InterlockLedger Variable-Length-Encoded Unsigned Long Integer) encoding/decoding.
