@@ -30,8 +30,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ******************************************************************************************************************************/
 
-using NUnit.Framework;
 using System;
+using NUnit.Framework;
 
 namespace InterlockLedger.Tags
 {
