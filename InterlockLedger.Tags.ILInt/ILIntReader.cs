@@ -1,5 +1,5 @@
 /******************************************************************************************************************************
- 
+
 Copyright (c) 2018-2019 InterlockLedger Network
 All rights reserved.
 
@@ -34,12 +34,27 @@ using System;
 
 namespace InterlockLedger.Tags
 {
+    /// <summary>
+    ///   <para>Class to decode an ILInt from its bytes into a ulong value. </para>
+    ///   <blockquote style="margin-right: 10px;" dir="ltr">
+    ///     <para><strong>Stateful:</strong> can't be shared in multiple lines of execution.</para>
+    ///     <para><em>One instance can be reused to decode many ILInt values, sequentially.</em></para>
+    ///   </blockquote>
+    /// </summary>
     public class ILIntReader
     {
+        /// <summary>Initializes a new instance of the <see cref="ILIntReader"/> class.</summary>
         public ILIntReader() => Reset();
 
+        /// <summary>Gets the decoded ILInt value.</summary>
+        /// <value>The decoded value after processing all needed bytes.</value>
+        /// <exception cref="InvalidOperationException">ILInt still not completely read</exception>
         public ulong Value => _size == 0 ? _value : throw new InvalidOperationException("ILInt still not completely read");
 
+        /// <summary>Process the specified byte.</summary>
+        /// <param name="nextByte">Next byte to be processed.</param>
+        /// <returns>True when no more bytes need to be provided</returns>
+        /// <exception cref="InvalidOperationException">Decoded ILInt value is too large</exception>
         public bool Done(byte nextByte) {
             if (_size < 0) {
                 if (nextByte < ILIntHelpers.ILINT_BASE) {
@@ -59,6 +74,7 @@ namespace InterlockLedger.Tags
             return true;
         }
 
+        /// <summary>Resets this instance, to start decoding a new ILInt.</summary>
         public void Reset() {
             _size = -1;
             _value = 0;

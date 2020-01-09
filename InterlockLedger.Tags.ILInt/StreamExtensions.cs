@@ -37,6 +37,10 @@ namespace InterlockLedger
 {
     public static class StreamExtensions
     {
+        /// <summary>Reads a single byte from the streams trying up to 3 times.</summary>
+        /// <param name="s">The stream to read from.</param>
+        /// <returns>Read byte.</returns>
+        /// <exception cref="TooFewBytesException">After 3 tries no byte could be read.</exception>
         public static byte ReadSingleByte(this Stream s) {
             var bytes = new byte[1];
             var retries = 3;

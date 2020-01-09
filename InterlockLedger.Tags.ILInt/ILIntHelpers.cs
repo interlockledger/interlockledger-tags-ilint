@@ -1,5 +1,5 @@
 /******************************************************************************************************************************
- 
+
 Copyright (c) 2018-2019 InterlockLedger Network
 All rights reserved.
 
@@ -35,22 +35,42 @@ using System.IO;
 
 namespace InterlockLedger.Tags
 {
+    /// <summary>Extension and helper methods to deal with ILInt encoding/decoding.</summary>
     public static class ILIntHelpers
     {
         public const int ILINT_BASE = 0xF8;
         public const ulong ILINT_MAX = ulong.MaxValue - ILINT_BASE;
 
-        public static byte[] AsILInt(this ulong value) {
-            var size = value.ILIntSize();
-            return value.ILIntEncode(new byte[size], 0, size);
-        }
+        /// <summary>
+        ///   <para>Encodes value to an array of bytes using ILInt encoding.</para>
+        ///   <para>
+        ///     <em>It is basically an alias to one of the ILIntEncode overloads.</em>
+        ///   </para>
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>ILInt encoded value as an array of bytes.</returns>
+        public static byte[] AsILInt(this ulong value) => value.ILIntEncode();
 
-        public static ulong ILIntDecode(this byte[] buffer) => ILIntDecode(new MemoryStream(buffer, 0, buffer.Length));
+        /// <summary>Decode ILInt from buffer bytes.</summary>
+        /// <param name="buffer">The buffer.</param>
+        /// <returns>Decoded ILInt value.</returns>
+        public static ulong ILIntDecode(this byte[] buffer) => ILIntDecode(buffer, 0, buffer.Length);
 
+        /// <summary>Decode ILInt from a range of bytes from the buffer.</summary>
+        /// <param name="buffer">The buffer.</param>
+        /// <param name="index">The index of the first byte to use.</param>
+        /// <param name="count">The maximum count of bytes that can be consumed.</param>
+        /// <returns>Decoded ILInt value.</returns>
         public static ulong ILIntDecode(this byte[] buffer, int index, int count) => ILIntDecode(new MemoryStream(buffer, index, count));
 
+        /// <summary>Decode an ILInt taking bytes from the stream.</summary>
+        /// <param name="stream">The stream.</param>
+        /// <returns>Decoded ILInt value.</returns>
         public static ulong ILIntDecode(this Stream stream) => ILIntDecode(() => stream.ReadSingleByte());
 
+        /// <summary>Decodes an ILInt from bytes provided by a functor.</summary>
+        /// <param name="readByte">The byte reading functor.</param>
+        /// <returns>Decoded ILInt value.</returns>
         public static ulong ILIntDecode(Func<byte> readByte) {
             ulong value = 0;
             var nextByte = readByte();
@@ -64,6 +84,13 @@ namespace InterlockLedger.Tags
             return value + ILINT_BASE;
         }
 
+        /// <summary>Encode the value as an ILInt in the provided buffer, in the specified range.</summary>
+        /// <param name="value">The value.</param>
+        /// <param name="buffer">The buffer.</param>
+        /// <param name="offset">The offset to start storing bytes in the buffer.</param>
+        /// <param name="count">The maximum count of bytes that can be stored, it may not be enough in which case it throws.</param>
+        /// <returns>The provided buffer.</returns>
+        /// <exception cref="TooFewBytesException"></exception>
         public static byte[] ILIntEncode(this ulong value, byte[] buffer, int offset, int count) {
             ILIntEncode(value, b => {
                 if (--count < 0)
@@ -73,16 +100,27 @@ namespace InterlockLedger.Tags
             return buffer;
         }
 
+        /// <summary>Encode the value as an ILInt, outputting the bytes to the stream.</summary>
+        /// <param name="stream">The stream to receive encoded byte;</param>
+        /// <param name="value">The value.</param>
+        /// <returns>The provided stream to allow call chaining.</returns>
         public static Stream ILIntEncode(this Stream stream, ulong value) {
             value.ILIntEncode(stream.WriteByte);
             return stream;
         }
 
+        /// <summary>Encode the value as an ILInt, output as an array of bytes.</summary>
+        /// <param name="value">The value.</param>
+        /// <returns>ILInt encoding of the value as an array of bytes.</returns>
         public static byte[] ILIntEncode(this ulong value) {
             var size = ILIntSize(value);
             return value.ILIntEncode(new byte[size], 0, size);
         }
 
+        /// <summary>Encode a value as an ILInt, providing the byte to an action.</summary>
+        /// <param name="value">The value to encode.</param>
+        /// <param name="writeByte">  The action that will be called for each byte generated while encoding the value.</param>
+        /// <exception cref="ArgumentNullException">writeByte</exception>
         public static void ILIntEncode(this ulong value, Action<byte> writeByte) {
             if (writeByte == null) {
                 throw new ArgumentNullException(nameof(writeByte));
@@ -100,6 +138,9 @@ namespace InterlockLedger.Tags
             }
         }
 
+        /// <summary>Calculate the size in bytes the value will have when encoded as an ILInt.</summary>
+        /// <param name="value">The value to measure.</param>
+        /// <returns>Size in bytes the <strong>value</strong> will have when encoded as an ILInt.</returns>
         public static int ILIntSize(this ulong value) {
             if (value < ILINT_BASE)
                 return 1;

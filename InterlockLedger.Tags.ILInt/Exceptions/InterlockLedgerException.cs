@@ -34,6 +34,8 @@ using System;
 
 namespace InterlockLedger
 {
+    /// <summary>Base class from all InterlockLedger exceptions.</summary>
+    /// <seealso cref="System.Exception" />
     public class InterlockLedgerException : Exception
     {
         protected InterlockLedgerException(string message) : base(message) {

@@ -12,10 +12,10 @@
         <RepositoryUrl>https://github.com/interlockledger/interlockledger-tags-ilint.git</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <PackageReleaseNotes>MOving to netstandard2.1/.net core 3.1 LTS</PackageReleaseNotes>
+        <PackageReleaseNotes>Adding some documentation comments to help with intellisense</PackageReleaseNotes>
         <LangVersion>latest</LangVersion>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
-        <Version>2.0.0</Version>
+        <Version>2.0.1</Version>
         <RootNamespace>InterlockLedger.Tags</RootNamespace>
     </PropertyGroup>
     <ItemGroup>
