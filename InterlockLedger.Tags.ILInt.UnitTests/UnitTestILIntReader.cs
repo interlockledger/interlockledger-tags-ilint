@@ -1,5 +1,5 @@
 /******************************************************************************************************************************
- 
+
 Copyright (c) 2018-2019 InterlockLedger Network
 All rights reserved.
 
@@ -31,6 +31,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ******************************************************************************************************************************/
 
 using System;
+using System.Buffers;
+using System.Collections.Generic;
 using NUnit.Framework;
 
 namespace InterlockLedger.Tags
@@ -94,6 +96,80 @@ namespace InterlockLedger.Tags
 
         [Test]
         public void TestTooLargeByAll() => Assert.Throws<InvalidOperationException>(() => ILD(new byte[] { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }), "ILIntDecodeFromByteArray too large by all => zero");
+
+        [Test]
+        public void TryDecodeIEnum() {
+            static (long consumed, bool ok, ulong? value) DoTry(params byte[] bytes) {
+                var reader = new ILIntReader();
+                var ok = reader.TryDecode((IEnumerable<byte>)bytes, out var consumed);
+                return (consumed, ok, ok ? reader.Value : (ulong?)null);
+            }
+            static void DoTryExpecting(bool okExpected, long consumedExpected, ulong? valueExpected, params byte[] bytes) {
+                var (consumed, ok, value) = DoTry(bytes);
+                Assert.AreEqual(okExpected, ok);
+                Assert.AreEqual(consumedExpected, consumed);
+                Assert.AreEqual(valueExpected, value);
+            }
+            DoTryExpecting(false, 0L, null);
+            DoTryExpecting(true, 1L, 0UL, 0);
+            DoTryExpecting(true, 1L, 0UL, 0, 1);
+            DoTryExpecting(true, 2L, 249UL, 0xF8, 1);
+            DoTryExpecting(true, 2L, 249UL, 0xF8, 1, 2, 3);
+        }
+
+        [Test]
+        public void TryDecodeReadOnlySequence() {
+            static (long consumed, bool ok, ulong? value) DoTry(int offset, int tail, params byte[] bytes) {
+                var reader = new ILIntReader();
+                var newBytes = new byte[bytes.Length + offset + tail];
+                Array.Copy(bytes, 0, newBytes, offset, bytes.Length);
+                var sequence = new ReadOnlySequence<byte>(newBytes, offset, bytes.Length);
+                var ok = reader.TryDecode(sequence, out var consumed);
+                return (consumed, ok, ok ? reader.Value : (ulong?)null);
+            }
+            static void DoTryExpecting(bool okExpected, long consumedExpected, ulong? valueExpected, int offset, int tail, params byte[] bytes) {
+                var (consumed, ok, value) = DoTry(offset, tail, bytes);
+                Assert.AreEqual(okExpected, ok);
+                Assert.AreEqual(valueExpected, value);
+                Assert.AreEqual(consumedExpected, consumed);
+            }
+            for (int i = 0; i < 32; i++) {
+                for (int j = 0; j < 32; j++) {
+                    DoTryExpecting(false, 0L, null, i, j);
+                    DoTryExpecting(true, 1L, 0UL, i, j, 0);
+                    DoTryExpecting(true, 1L, 0UL, i, j, 0, 1);
+                    DoTryExpecting(true, 2L, 249UL, i, j, 0xF8, 1);
+                    DoTryExpecting(true, 2L, 249UL, i, j, 0xF8, 1, 2, 3);
+                }
+            }
+        }
+
+        [Test]
+        public void TryDecodeReadOnlySpan() {
+            static (long consumed, bool ok, ulong? value) DoTry(int offset, int tail, params byte[] bytes) {
+                var reader = new ILIntReader();
+                var newBytes = new byte[bytes.Length + offset + tail];
+                Array.Copy(bytes, 0, newBytes, offset, bytes.Length);
+                var span = new ReadOnlySpan<byte>(newBytes, offset, bytes.Length);
+                var ok = reader.TryDecode(span, out var consumed);
+                return (consumed, ok, ok ? reader.Value : (ulong?)null);
+            }
+            static void DoTryExpecting(bool okExpected, long consumedExpected, ulong? valueExpected, int offset, int tail, params byte[] bytes) {
+                var (consumed, ok, value) = DoTry(offset, tail, bytes);
+                Assert.AreEqual(okExpected, ok);
+                Assert.AreEqual(consumedExpected, consumed);
+                Assert.AreEqual(valueExpected, value);
+            }
+            for (int i = 0; i < 32; i++) {
+                for (int j = 0; j < 32; j++) {
+                    DoTryExpecting(false, 0L, null, i, j);
+                    DoTryExpecting(true, 1L, 0UL, i, j, 0);
+                    DoTryExpecting(true, 1L, 0UL, i, j, 0, 1);
+                    DoTryExpecting(true, 2L, 249UL, i, j, 0xF8, 1);
+                    DoTryExpecting(true, 2L, 249UL, i, j, 0xF8, 1, 2, 3);
+                }
+            }
+        }
 
         private ulong ILD(byte[] bytes) {
             var reader = new ILIntReader();

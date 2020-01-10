@@ -32,7 +32,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 namespace InterlockLedger
 {
-    /// <summary>Exception to mark that not enough bytes where provided to decode an ILInt.</summary>
+    /// <summary>Exception to mark that not enough bytes where provided to decode an ILInt or some other payload.</summary>
     /// <seealso cref="InterlockLedger.InterlockLedgerException" />
     public class TooFewBytesException : InterlockLedgerException
     {

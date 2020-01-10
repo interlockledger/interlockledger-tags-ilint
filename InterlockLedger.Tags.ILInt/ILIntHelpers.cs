@@ -31,6 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ******************************************************************************************************************************/
 
 using System;
+using System.Buffers;
 using System.IO;
 
 namespace InterlockLedger.Tags
@@ -79,9 +80,7 @@ namespace InterlockLedger.Tags
             var size = nextByte - ILINT_BASE + 1;
             while (size-- > 0)
                 value = (value << 8) + readByte();
-            if (value > ILINT_MAX)
-                return 0;
-            return value + ILINT_BASE;
+            return value > ILINT_MAX ? 0 : value + ILINT_BASE;
         }
 
         /// <summary>Encode the value as an ILInt in the provided buffer, in the specified range.</summary>
@@ -156,9 +155,7 @@ namespace InterlockLedger.Tags
                 return 6;
             if (value <= (0xFFFF_FFFF_FFFFL + ILINT_BASE))
                 return 7;
-            if (value <= ((ulong)0xFF_FFFF_FFFF_FFFFL + ILINT_BASE))
-                return 8;
-            return 9;
+            return value <= ((ulong)0xFF_FFFF_FFFF_FFFFL + ILINT_BASE) ? 8 : 9;
         }
     }
 }

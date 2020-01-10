@@ -130,3 +130,6 @@ dotnet_diagnostic.CA2007.severity = none
 dotnet_diagnostic.CA2225.severity = none
 dotnet_diagnostic.CA2227.severity = none
 dotnet_diagnostic.RCS1194.severity = suggestion
+
+# RCS1001: Add braces (when expression spans over multiple lines).
+dotnet_diagnostic.RCS1001.severity = none

@@ -31,6 +31,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ******************************************************************************************************************************/
 
 using System;
+using System.Buffers;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace InterlockLedger.Tags
 {
@@ -78,6 +81,38 @@ namespace InterlockLedger.Tags
         public void Reset() {
             _size = -1;
             _value = 0;
+        }
+
+        public bool TryDecode(ReadOnlySpan<byte> bytes, out long consumed) {
+            consumed = 0;
+            foreach (var b in bytes) {
+                consumed++;
+                if (Done(b)) return true;
+            }
+            return false;
+        }
+
+        public bool TryDecode(IEnumerable<byte> bytes, out long consumed) {
+            if (bytes is null)
+                throw new ArgumentNullException(nameof(bytes));
+            consumed = 0;
+            foreach (var b in bytes) {
+                consumed++;
+                if (Done(b)) return true;
+            }
+            return false;
+        }
+
+        public bool TryDecode(in ReadOnlySequence<byte> byteSequence, out long consumed) {
+            consumed = 0;
+            if (!byteSequence.IsEmpty) {
+                foreach (var memory in byteSequence) {
+                    var result = TryDecode(memory.Span, out var consumedHere);
+                    consumed += consumedHere;
+                    if (result) return true;
+                }
+            }
+            return false;
         }
 
         private int _size;
