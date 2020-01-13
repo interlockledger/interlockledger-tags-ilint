@@ -1,6 +1,6 @@
 /******************************************************************************************************************************
 
-Copyright (c) 2018-2019 InterlockLedger Network
+Copyright (c) 2018-2020 InterlockLedger Network
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -101,7 +101,9 @@ namespace InterlockLedger.Tags
         public void TryDecodeIEnum() {
             static (long consumed, bool ok, ulong? value) DoTry(params byte[] bytes) {
                 var reader = new ILIntReader();
+                Assert.IsFalse(reader.Ready, "Should not be read before being supplied bytes");
                 var ok = reader.TryDecode((IEnumerable<byte>)bytes, out var consumed);
+                Assert.AreEqual(ok, reader.Ready, "Should be ready when done consuming bytes");
                 return (consumed, ok, ok ? reader.Value : (ulong?)null);
             }
             static void DoTryExpecting(bool okExpected, long consumedExpected, ulong? valueExpected, params byte[] bytes) {
@@ -121,10 +123,12 @@ namespace InterlockLedger.Tags
         public void TryDecodeReadOnlySequence() {
             static (long consumed, bool ok, ulong? value) DoTry(int offset, int tail, params byte[] bytes) {
                 var reader = new ILIntReader();
+                Assert.IsFalse(reader.Ready, "Should not be read before being supplied bytes");
                 var newBytes = new byte[bytes.Length + offset + tail];
                 Array.Copy(bytes, 0, newBytes, offset, bytes.Length);
                 var sequence = new ReadOnlySequence<byte>(newBytes, offset, bytes.Length);
                 var ok = reader.TryDecode(sequence, out var consumed);
+                Assert.AreEqual(ok, reader.Ready, "Should be ready when done consuming bytes");
                 return (consumed, ok, ok ? reader.Value : (ulong?)null);
             }
             static void DoTryExpecting(bool okExpected, long consumedExpected, ulong? valueExpected, int offset, int tail, params byte[] bytes) {
@@ -148,10 +152,12 @@ namespace InterlockLedger.Tags
         public void TryDecodeReadOnlySpan() {
             static (long consumed, bool ok, ulong? value) DoTry(int offset, int tail, params byte[] bytes) {
                 var reader = new ILIntReader();
+                Assert.IsFalse(reader.Ready, "Should not be read before being supplied bytes");
                 var newBytes = new byte[bytes.Length + offset + tail];
                 Array.Copy(bytes, 0, newBytes, offset, bytes.Length);
                 var span = new ReadOnlySpan<byte>(newBytes, offset, bytes.Length);
                 var ok = reader.TryDecode(span, out var consumed);
+                Assert.AreEqual(ok, reader.Ready, "Should be ready when done consuming bytes");
                 return (consumed, ok, ok ? reader.Value : (ulong?)null);
             }
             static void DoTryExpecting(bool okExpected, long consumedExpected, ulong? valueExpected, int offset, int tail, params byte[] bytes) {
@@ -173,12 +179,17 @@ namespace InterlockLedger.Tags
 
         private ulong ILD(byte[] bytes) {
             var reader = new ILIntReader();
-            for (int i = 0; i < bytes.Length; i++) {
-                var done = reader.Done(bytes[i]);
-                if (i + 1 < bytes.Length && done)
-                    Assert.Fail("Value decoded without all bytes");
-                if (i + 1 == bytes.Length && !done)
-                    Assert.Fail("Value not decoded with supplied bytes");
+            for (int k = 0; k < 2; k++) {
+                if (k > 0) reader.Reset();
+                Assert.IsFalse(reader.Ready, "Should not be read before being supplied bytes");
+                for (int i = 0; i < bytes.Length; i++) {
+                    var done = reader.Done(bytes[i]);
+                    if (i + 1 < bytes.Length && done)
+                        Assert.Fail("Value decoded without all bytes");
+                    if (i + 1 == bytes.Length && !done)
+                        Assert.Fail("Value not decoded with supplied bytes");
+                }
+                Assert.IsTrue(reader.Ready, "Should be ready when done consuming bytes");
             }
             return reader.Value;
         }

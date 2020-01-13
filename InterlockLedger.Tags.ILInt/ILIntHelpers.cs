@@ -1,6 +1,6 @@
 /******************************************************************************************************************************
-
-Copyright (c) 2018-2019 InterlockLedger Network
+ 
+Copyright (c) 2018-2020 InterlockLedger Network
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -31,7 +31,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ******************************************************************************************************************************/
 
 using System;
-using System.Buffers;
 using System.IO;
 
 namespace InterlockLedger.Tags
@@ -140,22 +139,14 @@ namespace InterlockLedger.Tags
         /// <summary>Calculate the size in bytes the value will have when encoded as an ILInt.</summary>
         /// <param name="value">The value to measure.</param>
         /// <returns>Size in bytes the <strong>value</strong> will have when encoded as an ILInt.</returns>
-        public static int ILIntSize(this ulong value) {
-            if (value < ILINT_BASE)
-                return 1;
-            if (value <= (0xFF + ILINT_BASE))
-                return 2;
-            if (value <= (0xFFFF + ILINT_BASE))
-                return 3;
-            if (value <= (0xFFFFFF + ILINT_BASE))
-                return 4;
-            if (value <= (0xFFFFFFFFL + ILINT_BASE))
-                return 5;
-            if (value <= (0xFF_FFFF_FFFF + ILINT_BASE))
-                return 6;
-            if (value <= (0xFFFF_FFFF_FFFFL + ILINT_BASE))
-                return 7;
-            return value <= ((ulong)0xFF_FFFF_FFFF_FFFFL + ILINT_BASE) ? 8 : 9;
-        }
+        public static int ILIntSize(this ulong value)
+            => value < ILINT_BASE ? 1
+            : value <= (0xFF + ILINT_BASE) ? 2
+            : value <= (0xFFFF + ILINT_BASE) ? 3
+            : value <= (0xFFFFFF + ILINT_BASE) ? 4
+            : value <= (0xFFFFFFFFL + ILINT_BASE) ? 5
+            : value <= (0xFF_FFFF_FFFF + ILINT_BASE) ? 6
+            : value <= (0xFFFF_FFFF_FFFFL + ILINT_BASE) ? 7
+            : value <= ((ulong)0xFF_FFFF_FFFF_FFFFL + ILINT_BASE) ? 8 : 9;
     }
 }

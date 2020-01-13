@@ -6,16 +6,18 @@
         <Company>InterlockLedger Network</Company>
         <Product>InterlockLedger</Product>
         <Description>This library implements the basic ILInt (InterlockLedger Variable-Length-Encoded Unsigned Long Integer) encoding/decoding.</Description>
-        <Copyright>Copyright (c) 2017-2019 InterlockLedger Network</Copyright>
+        <Copyright>Copyright (c) 2017-2020 InterlockLedger Network</Copyright>
         <PackageLicenseUrl></PackageLicenseUrl>
         <PackageProjectUrl>https://interlockledger.network/</PackageProjectUrl>
         <RepositoryUrl>https://github.com/interlockledger/interlockledger-tags-ilint.git</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <PackageReleaseNotes>More features</PackageReleaseNotes>
+        <PackageReleaseNotes>Better Unit Tests
+Small refactorings
+Ready property added to ILIntReader</PackageReleaseNotes>
         <LangVersion>latest</LangVersion>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
-        <Version>2.1.0</Version>
+        <Version>2.1.1</Version>
         <RootNamespace>InterlockLedger.Tags</RootNamespace>
     </PropertyGroup>
     <ItemGroup>

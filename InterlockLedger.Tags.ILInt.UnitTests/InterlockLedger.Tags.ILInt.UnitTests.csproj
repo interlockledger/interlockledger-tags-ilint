@@ -4,6 +4,7 @@
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <IsPackable>false</IsPackable>
         <RootNamespace>InterlockLedger.Tags</RootNamespace>
+        <Copyright>Copyright (c) 2017-2020 InterlockLedger Network</Copyright>
     </PropertyGroup>
 
     <ItemGroup>

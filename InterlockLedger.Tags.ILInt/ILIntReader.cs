@@ -1,6 +1,6 @@
 /******************************************************************************************************************************
 
-Copyright (c) 2018-2019 InterlockLedger Network
+Copyright (c) 2018-2020 InterlockLedger Network
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -48,6 +48,9 @@ namespace InterlockLedger.Tags
     {
         /// <summary>Initializes a new instance of the <see cref="ILIntReader"/> class.</summary>
         public ILIntReader() => Reset();
+
+        /// <summary>Gets if a completely decoded ILInt value is available. </summary>
+        public bool Ready => _size == 0;
 
         /// <summary>Gets the decoded ILInt value.</summary>
         /// <value>The decoded value after processing all needed bytes.</value>
