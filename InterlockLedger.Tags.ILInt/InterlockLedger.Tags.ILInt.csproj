@@ -12,12 +12,10 @@
         <RepositoryUrl>https://github.com/interlockledger/interlockledger-tags-ilint.git</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <PackageReleaseNotes>Better Unit Tests
-Small refactorings
-Ready property added to ILIntReader</PackageReleaseNotes>
+        <PackageReleaseNotes>New  'public static IBufferWriter&lt;byte&gt; ILIntEncode(this IBufferWriter&lt;byte&gt; bufferWriter, ulong value)'</PackageReleaseNotes>
         <LangVersion>latest</LangVersion>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
-        <Version>2.1.1</Version>
+        <Version>2.2.0</Version>
         <RootNamespace>InterlockLedger.Tags</RootNamespace>
     </PropertyGroup>
     <ItemGroup>

@@ -31,6 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ******************************************************************************************************************************/
 
 using System;
+using System.Buffers;
 using System.IO;
 
 namespace InterlockLedger.Tags
@@ -99,12 +100,24 @@ namespace InterlockLedger.Tags
         }
 
         /// <summary>Encode the value as an ILInt, outputting the bytes to the stream.</summary>
-        /// <param name="stream">The stream to receive encoded byte;</param>
+        /// <param name="stream">The stream to receive encoded bytes</param>
         /// <param name="value">The value.</param>
         /// <returns>The provided stream to allow call chaining.</returns>
         public static Stream ILIntEncode(this Stream stream, ulong value) {
             value.ILIntEncode(stream.WriteByte);
             return stream;
+        }
+
+        /// <summary>Encode the value as an ILInt, outputting the bytes to the IBufferWriter<byte>.</summary>
+        /// <param name="bufferWriter">The IBufferWriter<byte> to receive encoded bytes</param>
+        /// <param name="value">The value.</param>
+        /// <returns>The provided IBufferWriter<byte> to allow call chaining.</returns>
+        public static IBufferWriter<byte> ILIntEncode(this IBufferWriter<byte> bufferWriter, ulong value) {
+            var memory = bufferWriter.GetMemory(ILIntSize(value));
+            var i = 0;
+            ILIntEncode(value, b => memory.Span[i++] = b);
+            bufferWriter.Advance(i);
+            return bufferWriter;
         }
 
         /// <summary>Encode the value as an ILInt, output as an array of bytes.</summary>
