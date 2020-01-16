@@ -27,4 +27,4 @@ jobs:
       run: dotnet pack -o `pwd`/.nugets --configuration Release --no-build -v:m
 
     - name: Push nuget
-      run: dotnet nuget push `pwd`/.nugets/*.nupkg -s https://nuget.pkg.github.com/interlockledger/index.json -k ${{ secrets.RegistryToken }} --skip-duplicate
+      run: dotnet nuget push `pwd`/.nugets/*.nupkg -s https://nuget.pkg.github.com/interlockledger/index.json --skip-duplicate

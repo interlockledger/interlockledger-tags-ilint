@@ -303,3 +303,4 @@ __pycache__/
 OpenCover/
 
 MigrationBackup/
+/NuGet.Config
