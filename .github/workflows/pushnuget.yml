@@ -22,7 +22,7 @@ jobs:
         nuget-version: latest
 
     - name: Set up nuget source
-      run: nuget sources add -name "GitHub" -Source https://nuget.pkg.github.com/interlockledger/index.json -Username monoman@gmail.com -Password ${{ secrets.RegistryToken }}
+      run: nuget sources add -name "GitHub" -Source https://nuget.pkg.github.com/interlockledger/index.json -Username monoman@gmail.com -Password ${{ secrets.RegistryToken }} && nuget sources list
 
     - name: Test with dotnet
       run: dotnet test --configuration Release -v:m | grep -v 'NAME_UNKNOWN:Package'
@@ -31,4 +31,4 @@ jobs:
       run: dotnet pack -o `pwd`/.nugets --configuration Release --no-build -v:m
 
     - name: Push nuget
-      run: nuget push `pwd`/.nugets/*.nupkg -s https://nuget.pkg.github.com/interlockledger/index.json --skip-duplicate
+      run: dotnet nuget push `pwd`/.nugets/*.nupkg -s https://nuget.pkg.github.com/interlockledger/index.json --skip-duplicate
