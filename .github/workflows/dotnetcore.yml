@@ -16,10 +16,10 @@ jobs:
         dotnet-version: 3.1.101
 
     - uses: nuget/setup-nuget@v1
-          with:
-            nuget-api-key: ${{ secrets.RegistryToken }}
-            nuget-api-key-source: GitHub
-            nuget-version: latest
+      with:
+        nuget-api-key: ${{ secrets.RegistryToken }}
+        nuget-api-key-source: GitHub
+        nuget-version: latest
 
     - name: Test with dotnet
       run: dotnet test --configuration Release -v:m | grep -v 'NAME_UNKNOWN:Package'
