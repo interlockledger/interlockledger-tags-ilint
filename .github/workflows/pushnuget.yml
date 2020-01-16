@@ -17,13 +17,6 @@ jobs:
       with:
         dotnet-version: 3.1.101
 
-    - uses: nuget/setup-nuget@v1
-      with:
-        nuget-version: latest
-
-    - name: Set up nuget source
-      run: nuget sources add -name "GitHub" -Source https://nuget.pkg.github.com/interlockledger/index.json -Username monoman@gmail.com -StorePasswordInClearText -Password ${{ secrets.RegistryToken }} -Config nuget.config && nuget sources list -Config nuget.config && cat nuget.config | grep -v ${{ secrets.RegistryToken }}
-
     - name: Test with dotnet
       run: dotnet test --configuration Release -v:m | grep -v 'NAME_UNKNOWN:Package'
 

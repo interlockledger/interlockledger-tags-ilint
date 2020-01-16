@@ -15,7 +15,7 @@
         <PackageReleaseNotes>Fix Push Nuget Action</PackageReleaseNotes>
         <LangVersion>latest</LangVersion>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
-        <Version>2.2.1</Version>
+        <Version>2.2.1.1</Version>
         <RootNamespace>InterlockLedger.Tags</RootNamespace>
     </PropertyGroup>
     <ItemGroup>
