@@ -16,7 +16,7 @@ jobs:
         dotnet-version: 5.0.200
 
     - name: Setup nuget config
-      run: sed 's/GITHUB_TOKEN/${{ secrets.RegistryToken }}/g' .nuget.config > nuget.config
+      run: sed 's/GITHUB_TOKEN/${{ secrets.REGISTRY_TOKEN }}/g' .nuget.config > nuget.config
 
     - name: Test with dotnet
       run: dotnet test --configuration Release -v:m | grep -v 'NAME_UNKNOWN:Package'
