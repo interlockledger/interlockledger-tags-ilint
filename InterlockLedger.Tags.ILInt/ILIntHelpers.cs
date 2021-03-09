@@ -1,34 +1,36 @@
-/******************************************************************************************************************************
+// ******************************************************************************************************************************
+//
+// Copyright (c) 2018-2021 InterlockLedger Network
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met
+//
+// * Redistributions of source code must retain the above copyright notice, this
+//   list of conditions and the following disclaimer.
+//
+// * Redistributions in binary form must reproduce the above copyright notice,
+//   this list of conditions and the following disclaimer in the documentation
+//   and/or other materials provided with the distribution.
+//
+// * Neither the name of the copyright holder nor the names of its
+//   contributors may be used to endorse or promote products derived from
+//   this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+// DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+// FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+// DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+// SERVICES, LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION) HOWEVER
+// CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+// OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+//
+// ******************************************************************************************************************************
 
-Copyright (c) 2018-2020 InterlockLedger Network
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-
-* Redistributions of source code must retain the above copyright notice, this
-  list of conditions and the following disclaimer.
-
-* Redistributions in binary form must reproduce the above copyright notice,
-  this list of conditions and the following disclaimer in the documentation
-  and/or other materials provided with the distribution.
-
-* Neither the name of the copyright holder nor the names of its
-  contributors may be used to endorse or promote products derived from
-  this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-******************************************************************************************************************************/
+#nullable enable
 
 using System;
 using System.Buffers;
@@ -55,24 +57,31 @@ namespace InterlockLedger.Tags
         /// <summary>Decode ILInt from buffer bytes.</summary>
         /// <param name="buffer">The buffer.</param>
         /// <returns>Decoded ILInt value.</returns>
-        public static ulong ILIntDecode(this byte[] buffer) => ILIntDecode(buffer, 0, buffer.Length);
+        public static ulong ILIntDecode(this byte[] buffer) => ILIntDecode(buffer.Required(nameof(buffer)), 0, buffer.Length);
 
         /// <summary>Decode ILInt from a range of bytes from the buffer.</summary>
         /// <param name="buffer">The buffer.</param>
         /// <param name="index">The index of the first byte to use.</param>
         /// <param name="count">The maximum count of bytes that can be consumed.</param>
         /// <returns>Decoded ILInt value.</returns>
-        public static ulong ILIntDecode(this byte[] buffer, int index, int count) => ILIntDecode(new MemoryStream(buffer, index, count));
+        public static ulong ILIntDecode(this byte[] buffer, int index, int count) {
+            CheckBuffer(buffer, index, count);
+            return ILIntDecode(new MemoryStream(buffer, index, count));
+        }
 
         /// <summary>Decode an ILInt taking bytes from the stream.</summary>
         /// <param name="stream">The stream.</param>
         /// <returns>Decoded ILInt value.</returns>
-        public static ulong ILIntDecode(this Stream stream) => ILIntDecode(() => stream.ReadSingleByte());
+        public static ulong ILIntDecode(this Stream stream) {
+            stream.Required(nameof(stream));
+            return ILIntDecode(() => stream.ReadSingleByte());
+        }
 
         /// <summary>Decodes an ILInt from bytes provided by a functor.</summary>
         /// <param name="readByte">The byte reading functor.</param>
         /// <returns>Decoded ILInt value.</returns>
         public static ulong ILIntDecode(Func<byte> readByte) {
+            readByte.Required(nameof(readByte));
             ulong value = 0;
             var nextByte = readByte();
             if (nextByte < ILINT_BASE)
@@ -91,6 +100,7 @@ namespace InterlockLedger.Tags
         /// <returns>The provided buffer.</returns>
         /// <exception cref="TooFewBytesException"></exception>
         public static byte[] ILIntEncode(this ulong value, byte[] buffer, int offset, int count) {
+            CheckBuffer(buffer, offset, count);
             ILIntEncode(value, b => {
                 if (--count < 0)
                     throw new TooFewBytesException();
@@ -104,7 +114,7 @@ namespace InterlockLedger.Tags
         /// <param name="value">The value.</param>
         /// <returns>The provided stream to allow call chaining.</returns>
         public static Stream ILIntEncode(this Stream stream, ulong value) {
-            value.ILIntEncode(stream.WriteByte);
+            value.ILIntEncode(stream.Required(nameof(stream)).WriteByte);
             return stream;
         }
 
@@ -113,7 +123,7 @@ namespace InterlockLedger.Tags
         /// <param name="value">The value.</param>
         /// <returns>The provided IBufferWriter<byte> to allow call chaining.</returns>
         public static IBufferWriter<byte> ILIntEncode(this IBufferWriter<byte> bufferWriter, ulong value) {
-            var memory = bufferWriter.GetMemory(ILIntSize(value));
+            var memory = bufferWriter.Required(nameof(bufferWriter)).GetMemory(ILIntSize(value));
             var i = 0;
             ILIntEncode(value, b => memory.Span[i++] = b);
             bufferWriter.Advance(i);
@@ -133,10 +143,7 @@ namespace InterlockLedger.Tags
         /// <param name="writeByte">  The action that will be called for each byte generated while encoding the value.</param>
         /// <exception cref="ArgumentNullException">writeByte</exception>
         public static void ILIntEncode(this ulong value, Action<byte> writeByte) {
-            if (writeByte == null) {
-                throw new ArgumentNullException(nameof(writeByte));
-            }
-
+            writeByte.Required(nameof(writeByte));
             var size = ILIntSize(value);
             if (size == 1) {
                 writeByte((byte)(value & 0xFF));
@@ -161,5 +168,13 @@ namespace InterlockLedger.Tags
             : value <= (0xFF_FFFF_FFFF + ILINT_BASE) ? 6
             : value <= (0xFFFF_FFFF_FFFFL + ILINT_BASE) ? 7
             : value <= ((ulong)0xFF_FFFF_FFFF_FFFFL + ILINT_BASE) ? 8 : 9;
+
+        private static void CheckBuffer(byte[] buffer, int offset, int count) {
+            buffer.Required(nameof(buffer));
+            if (offset < 0 || offset >= buffer.Length)
+                throw new ArgumentOutOfRangeException(nameof(offset));
+            if (count < 1 || offset + count > buffer.Length)
+                throw new ArgumentOutOfRangeException(nameof(count));
+        }
     }
 }
