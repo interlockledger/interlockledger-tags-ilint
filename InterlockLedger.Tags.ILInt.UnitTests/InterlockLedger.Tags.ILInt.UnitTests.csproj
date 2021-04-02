@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="InterlockLedger.Commons" Version="1.2.3" />
+        <PackageReference Include="InterlockLedger.Commons" Version="1.2.4" />
         <PackageReference Include="Microsoft.CodeAnalysis" Version="3.9.0" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
         <PackageReference Include="MSTest.TestAdapter" Version="2.2.3" />
