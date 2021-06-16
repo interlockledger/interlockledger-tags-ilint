@@ -13,9 +13,9 @@
         <RepositoryUrl>https://github.com/interlockledger/interlockledger-tags-ilint.git</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <PackageReleaseNotes>Upgrading to InterlockLedger.Commons v1.2.4</PackageReleaseNotes>
+        <PackageReleaseNotes>Upgrading to InterlockLedger.Commons v1.2.5</PackageReleaseNotes>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
-        <Version>3.0.3</Version>
+        <Version>3.0.4</Version>
         <RootNamespace>InterlockLedger.Tags</RootNamespace>
     </PropertyGroup>
     <ItemGroup>
@@ -25,7 +25,7 @@
         </None>
     </ItemGroup>
     <ItemGroup>
-      <PackageReference Include="InterlockLedger.Commons" Version="1.2.4" />
+      <PackageReference Include="InterlockLedger.Commons" Version="1.2.5" />
       <PackageReference Include="Microsoft.CodeAnalysis" Version="3.9.0" />
     </ItemGroup>
     <Target Name="PublishLocally" AfterTargets="Pack" Condition="Exists('$(INTERLOCK_LOCAL_NUGETS_FOLDER)')">

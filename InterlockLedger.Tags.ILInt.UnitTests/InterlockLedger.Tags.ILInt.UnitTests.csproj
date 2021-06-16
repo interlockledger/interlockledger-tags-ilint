@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="InterlockLedger.Commons" Version="1.2.4" />
+        <PackageReference Include="InterlockLedger.Commons" Version="1.2.5" />
         <PackageReference Include="Microsoft.CodeAnalysis" Version="3.9.0" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
         <PackageReference Include="MSTest.TestAdapter" Version="2.2.3" />
