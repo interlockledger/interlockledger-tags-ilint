@@ -40,7 +40,8 @@ namespace InterlockLedger
         /// <summary>Decode ILInt from buffer bytes.</summary>
         /// <param name="buffer">The buffer.</param>
         /// <returns>Decoded ILInt value.</returns>
-        public static ulong ILIntDecode(this byte[] buffer) => ILIntDecode(buffer.Required(nameof(buffer)), 0, buffer.Length);
+        public static ulong ILIntDecode(this byte[] buffer)
+            => buffer.Required(nameof(buffer)).ILIntDecode(0, buffer.Length);
 
         /// <summary>Decode ILInt from a range of bytes from the buffer.</summary>
         /// <param name="buffer">The buffer.</param>

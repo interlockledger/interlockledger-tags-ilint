@@ -55,6 +55,22 @@ namespace InterlockLedger.Tags
         [TestCase(18446744073709551615, ExpectedResult = new byte[] { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 7 })]
         public byte[] AsILIntToByteArray(ulong value) => value.AsILInt();
 
+        [TestCase(0UL, ExpectedResult = 0L)]
+        [TestCase(2UL, ExpectedResult = 1L)]
+        [TestCase(0xFEUL, ExpectedResult = 127L)]
+        [TestCase(1UL, ExpectedResult = -1L)]
+        [TestCase(3UL, ExpectedResult = -2L)]
+        [TestCase(0xFFUL, ExpectedResult = -128L)]
+        public long AsSignedILInt(ulong value) => value.AsSignedILInt();
+
+        [TestCase(0L, ExpectedResult = 0UL)]
+        [TestCase(1L, ExpectedResult = 2UL)]
+        [TestCase(127L, ExpectedResult = 0xFEUL)]
+        [TestCase(-1L, ExpectedResult = 1UL)]
+        [TestCase(-2L, ExpectedResult = 3UL)]
+        [TestCase(-128L, ExpectedResult = 0xFFUL)]
+        public ulong AsUnsignedILInt(long value) => value.AsUnsignedILInt();
+
         [TestCase((ulong)0, ExpectedResult = 1)]
         [TestCase((ulong)ILIntHelpers.ILINT_BASE - 1, ExpectedResult = 1)]
         [TestCase((ulong)ILIntHelpers.ILINT_BASE, ExpectedResult = 2)]

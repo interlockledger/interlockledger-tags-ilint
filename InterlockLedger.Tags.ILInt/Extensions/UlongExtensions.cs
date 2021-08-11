@@ -48,6 +48,42 @@ namespace InterlockLedger.Tags
         /// <returns>ILInt encoded value as an array of bytes.</returns>
         public static byte[] AsILInt(this ulong value) => value.ILIntEncode();
 
+        /*
+         * To overcome this limitation, the ILInt standard defines a signed value transformation, called ILIntSignEnc and its reverse ILIntSignDec. The ideia behind this transformation is to encode the negative numbers in a way that minimize the number of msb set and thus use less space when encoded using ILInt.
+
+ILIntSignEnc is defined as follows:
+
+Convert the signed 64-bit value into an unsigned v value using two's complement;
+If the sign bit (bit 63) of v is set, let e be not (v shl 1);
+If the sign bit (bit 63) of v is not set, let e be (v shl 1);
+Return e;
+where shl is a bitwise shift lef operation and not is a bitwise not.
+
+ILIntSignDec is defined as follows:
+
+If bit 0 of e is set, let d be e shr 1;
+If bit 1 of e is set, let d be not (e shr 1);
+Let r be e converted to a 64-bit signed value using two's complement;
+Return r;
+where shr is an unsigned shift right operation and not is a bitwise not.
+
+Using this encoding, the sign bit is moved to the least significant bit and the value is always converted to a small value if its absolute value is small.
+         */
+
+        public static long AsSignedILInt(this ulong value) {
+            unchecked {
+                var d = (long)(value >> 1);
+                return (value & 1) == 0 ? d : ~d;
+            }
+        }
+
+        public static ulong AsUnsignedILInt(this long value) {
+            unchecked {
+                var s = (ulong)(value << 1);
+                return ((ulong)value & 0x8000000000000000ul) != 0 ? ~s : s;
+            }
+        }
+
         /// <summary>Encode the value as an ILInt in the provided buffer, in the specified range.</summary>
         /// <param name="value">The value.</param>
         /// <param name="buffer">The buffer.</param>
