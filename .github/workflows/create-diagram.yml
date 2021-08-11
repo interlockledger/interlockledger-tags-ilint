@@ -10,5 +10,8 @@ jobs:
     steps:
     - uses: actions/checkout@v1
 
+    - name: Undetach HEAD
+      run:  git switch -
+
     - name: Repo Visualizer
       uses: githubocto/repo-visualizer@0.5.0
