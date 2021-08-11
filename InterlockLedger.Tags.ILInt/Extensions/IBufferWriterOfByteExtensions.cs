@@ -31,27 +31,22 @@
 // ******************************************************************************************************************************
 
 using System;
+using System.Buffers;
 
 namespace InterlockLedger.Tags
 {
-    public static class ILIntHelpers
+    public static class IBufferWriterOfByteExtensions
     {
-        public const int ILINT_BASE = 0xF8;
-        public const ulong ILINT_MAX = ulong.MaxValue - ILINT_BASE;
-
-        /// <summary>Decodes an ILInt from bytes provided by a functor.</summary>
-        /// <param name="readByte">The byte reading functor.</param>
-        /// <returns>Decoded ILInt value.</returns>
-        public static ulong ILIntDecode(Func<byte> readByte) {
-            readByte.Required(nameof(readByte));
-            ulong value = 0;
-            var nextByte = readByte();
-            if (nextByte < ILINT_BASE)
-                return nextByte;
-            var size = nextByte - ILINT_BASE + 1;
-            while (size-- > 0)
-                value = (value << 8) + readByte();
-            return value > ILINT_MAX ? 0 : value + ILINT_BASE;
+        /// <summary>Encode the value as an ILInt, outputting the bytes to the IBufferWriter<byte>.</summary>
+        /// <param name="bufferWriter">The IBufferWriter<byte> to receive encoded bytes</param>
+        /// <param name="value">The value.</param>
+        /// <returns>The provided IBufferWriter<byte> to allow call chaining.</returns>
+        public static IBufferWriter<byte> ILIntEncode(this IBufferWriter<byte> bufferWriter, ulong value) {
+            var memory = bufferWriter.Required(nameof(bufferWriter)).GetMemory(value.ILIntSize());
+            var i = 0;
+            value.ILIntEncode(b => memory.Span[i++] = b);
+            bufferWriter.Advance(i);
+            return bufferWriter;
         }
     }
 }

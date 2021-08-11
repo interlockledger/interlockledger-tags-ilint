@@ -1,5 +1,5 @@
 // ******************************************************************************************************************************
-//  
+//
 // Copyright (c) 2018-2021 InterlockLedger Network
 // All rights reserved.
 //
@@ -33,11 +33,29 @@
 using System;
 using System.IO;
 using System.Threading;
+using InterlockLedger.Tags;
 
 namespace InterlockLedger
 {
     public static class StreamExtensions
     {
+        /// <summary>Decode an ILInt taking bytes from the stream.</summary>
+        /// <param name="stream">The stream.</param>
+        /// <returns>Decoded ILInt value.</returns>
+        public static ulong ILIntDecode(this Stream stream) {
+            stream.Required(nameof(stream));
+            return ILIntHelpers.ILIntDecode(() => stream.ReadSingleByte());
+        }
+
+        /// <summary>Encode the value as an ILInt, outputting the bytes to the stream.</summary>
+        /// <param name="stream">The stream to receive encoded bytes</param>
+        /// <param name="value">The value.</param>
+        /// <returns>The provided stream to allow call chaining.</returns>
+        public static Stream ILIntEncode(this Stream stream, ulong value) {
+            value.ILIntEncode(stream.Required(nameof(stream)).WriteByte);
+            return stream;
+        }
+
         /// <summary>Reads a single byte from the streams trying up to 3 times.</summary>
         /// <param name="s">The stream to read from.</param>
         /// <returns>Read byte.</returns>

@@ -1,5 +1,5 @@
 // ******************************************************************************************************************************
-//  
+//
 // Copyright (c) 2018-2021 InterlockLedger Network
 // All rights reserved.
 //
@@ -38,7 +38,7 @@ using NUnit.Framework;
 namespace InterlockLedger.Tags
 {
     [TestFixture]
-    public class UnitTestILIntReader
+    public class ILIntReaderTests
     {
         [Test]
         public void Test0() => Assert.AreEqual(0ul, ILD(new byte[] { 0 }), "ILIntDecodeFromByteArray 0");

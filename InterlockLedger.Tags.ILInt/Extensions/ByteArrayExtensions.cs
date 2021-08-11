@@ -31,27 +31,33 @@
 // ******************************************************************************************************************************
 
 using System;
+using System.IO;
 
-namespace InterlockLedger.Tags
+namespace InterlockLedger
 {
-    public static class ILIntHelpers
+    public static class ByteArrayExtensions
     {
-        public const int ILINT_BASE = 0xF8;
-        public const ulong ILINT_MAX = ulong.MaxValue - ILINT_BASE;
-
-        /// <summary>Decodes an ILInt from bytes provided by a functor.</summary>
-        /// <param name="readByte">The byte reading functor.</param>
+        /// <summary>Decode ILInt from buffer bytes.</summary>
+        /// <param name="buffer">The buffer.</param>
         /// <returns>Decoded ILInt value.</returns>
-        public static ulong ILIntDecode(Func<byte> readByte) {
-            readByte.Required(nameof(readByte));
-            ulong value = 0;
-            var nextByte = readByte();
-            if (nextByte < ILINT_BASE)
-                return nextByte;
-            var size = nextByte - ILINT_BASE + 1;
-            while (size-- > 0)
-                value = (value << 8) + readByte();
-            return value > ILINT_MAX ? 0 : value + ILINT_BASE;
+        public static ulong ILIntDecode(this byte[] buffer) => ILIntDecode(buffer.Required(nameof(buffer)), 0, buffer.Length);
+
+        /// <summary>Decode ILInt from a range of bytes from the buffer.</summary>
+        /// <param name="buffer">The buffer.</param>
+        /// <param name="index">The index of the first byte to use.</param>
+        /// <param name="count">The maximum count of bytes that can be consumed.</param>
+        /// <returns>Decoded ILInt value.</returns>
+        public static ulong ILIntDecode(this byte[] buffer, int index, int count) {
+            CheckBuffer(buffer, index, count);
+            return new MemoryStream(buffer, index, count).ILIntDecode();
+        }
+
+        internal static void CheckBuffer(byte[] buffer, int offset, int count) {
+            buffer.Required(nameof(buffer));
+            if (offset < 0 || offset >= buffer.Length)
+                throw new ArgumentOutOfRangeException(nameof(offset));
+            if (count < 1 || offset + count > buffer.Length)
+                throw new ArgumentOutOfRangeException(nameof(count));
         }
     }
 }
