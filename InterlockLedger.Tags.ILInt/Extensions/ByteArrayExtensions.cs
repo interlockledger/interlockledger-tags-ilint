@@ -30,35 +30,31 @@
 //
 // ******************************************************************************************************************************
 
-using System;
-using System.IO;
+namespace InterlockLedger;
 
-namespace InterlockLedger
+public static class ByteArrayExtensions
 {
-    public static class ByteArrayExtensions
-    {
-        /// <summary>Decode ILInt from buffer bytes.</summary>
-        /// <param name="buffer">The buffer.</param>
-        /// <returns>Decoded ILInt value.</returns>
-        public static ulong ILIntDecode(this byte[] buffer)
-            => buffer.Required(nameof(buffer)).ILIntDecode(0, buffer.Length);
+    /// <summary>Decode ILInt from buffer bytes.</summary>
+    /// <param name="buffer">The buffer.</param>
+    /// <returns>Decoded ILInt value.</returns>
+    public static ulong ILIntDecode(this byte[] buffer)
+        => buffer.Required(nameof(buffer)).ILIntDecode(0, buffer.Length);
 
-        /// <summary>Decode ILInt from a range of bytes from the buffer.</summary>
-        /// <param name="buffer">The buffer.</param>
-        /// <param name="index">The index of the first byte to use.</param>
-        /// <param name="count">The maximum count of bytes that can be consumed.</param>
-        /// <returns>Decoded ILInt value.</returns>
-        public static ulong ILIntDecode(this byte[] buffer, int index, int count) {
-            CheckBuffer(buffer, index, count);
-            return new MemoryStream(buffer, index, count).ILIntDecode();
-        }
+    /// <summary>Decode ILInt from a range of bytes from the buffer.</summary>
+    /// <param name="buffer">The buffer.</param>
+    /// <param name="index">The index of the first byte to use.</param>
+    /// <param name="count">The maximum count of bytes that can be consumed.</param>
+    /// <returns>Decoded ILInt value.</returns>
+    public static ulong ILIntDecode(this byte[] buffer, int index, int count) {
+        CheckBuffer(buffer, index, count);
+        return new MemoryStream(buffer, index, count).ILIntDecode();
+    }
 
-        internal static void CheckBuffer(byte[] buffer, int offset, int count) {
-            buffer.Required(nameof(buffer));
-            if (offset < 0 || offset >= buffer.Length)
-                throw new ArgumentOutOfRangeException(nameof(offset));
-            if (count < 1 || offset + count > buffer.Length)
-                throw new ArgumentOutOfRangeException(nameof(count));
-        }
+    internal static void CheckBuffer(byte[] buffer, int offset, int count) {
+        buffer.Required(nameof(buffer));
+        if (offset < 0 || offset >= buffer.Length)
+            throw new ArgumentOutOfRangeException(nameof(offset));
+        if (count < 1 || offset + count > buffer.Length)
+            throw new ArgumentOutOfRangeException(nameof(count));
     }
 }

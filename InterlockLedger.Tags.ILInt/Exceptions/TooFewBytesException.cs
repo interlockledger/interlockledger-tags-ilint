@@ -30,16 +30,15 @@
 //
 // ******************************************************************************************************************************
 
-namespace InterlockLedger
-{
-    /// <summary>Exception to mark that not enough bytes where provided to decode an ILInt or some other payload.</summary>
-    /// <seealso cref="InterlockLedger.InterlockLedgerException" />
-    public class TooFewBytesException : InterlockLedgerException
-    {
-        public TooFewBytesException() : base("Insuficcient bytes to read") {
-        }
+namespace InterlockLedger;
 
-        public TooFewBytesException(int length) : base($"Not able to read {length} bytes from stream") {
-        }
+/// <summary>Exception to mark that not enough bytes where provided to decode an ILInt or some other payload.</summary>
+/// <seealso cref="InterlockLedger.InterlockLedgerException" />
+public class TooFewBytesException : InterlockLedgerException
+{
+    public TooFewBytesException() : base("Insuficcient bytes to read") {
+    }
+
+    public TooFewBytesException(int length) : base($"Not able to read {length} bytes from stream") {
     }
 }

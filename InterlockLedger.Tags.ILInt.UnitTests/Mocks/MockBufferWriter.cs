@@ -30,29 +30,27 @@
 //
 // ******************************************************************************************************************************
 
-using System;
 using System.Buffers;
 
-namespace InterlockLedger.Tags
+namespace InterlockLedger.Tags;
+
+public class MockBufferWriter : IBufferWriter<byte>
 {
-    public class MockBufferWriter : IBufferWriter<byte>
-    {
-        public MockBufferWriter(byte[] memory) => Memory = memory.Required(nameof(memory));
+    public MockBufferWriter(byte[] memory) => Memory = memory.Required(nameof(memory));
 
-        public byte[] Memory { get; }
-        public int Position { get; private set; } = 0;
+    public byte[] Memory { get; }
+    public int Position { get; private set; } = 0;
 
-        public void Advance(int count) => Position += count;
+    public void Advance(int count) => Position += count;
 
-        public Memory<byte> GetMemory(int sizeHint = 0) {
-            var tailSize = Memory.Length - Position;
-            if (sizeHint > tailSize)
-                throw new InvalidOperationException("Asking for more memory than expected");
-            if (sizeHint == 0)
-                sizeHint = tailSize;
-            return new Memory<byte>(Memory, Position, sizeHint);
-        }
-
-        public Span<byte> GetSpan(int sizeHint = 0) => GetMemory(sizeHint).Span;
+    public Memory<byte> GetMemory(int sizeHint = 0) {
+        var tailSize = Memory.Length - Position;
+        if (sizeHint > tailSize)
+            throw new InvalidOperationException("Asking for more memory than expected");
+        if (sizeHint == 0)
+            sizeHint = tailSize;
+        return new Memory<byte>(Memory, Position, sizeHint);
     }
+
+    public Span<byte> GetSpan(int sizeHint = 0) => GetMemory(sizeHint).Span;
 }

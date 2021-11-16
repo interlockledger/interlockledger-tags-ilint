@@ -30,46 +30,42 @@
 //
 // ******************************************************************************************************************************
 
-using System;
-using System.IO;
-using System.Threading;
 using InterlockLedger.Tags;
 
-namespace InterlockLedger
+namespace InterlockLedger;
+
+public static class StreamExtensions
 {
-    public static class StreamExtensions
-    {
-        /// <summary>Decode an ILInt taking bytes from the stream.</summary>
-        /// <param name="stream">The stream.</param>
-        /// <returns>Decoded ILInt value.</returns>
-        public static ulong ILIntDecode(this Stream stream) {
-            stream.Required(nameof(stream));
-            return ILIntHelpers.ILIntDecode(() => stream.ReadSingleByte());
-        }
+    /// <summary>Decode an ILInt taking bytes from the stream.</summary>
+    /// <param name="stream">The stream.</param>
+    /// <returns>Decoded ILInt value.</returns>
+    public static ulong ILIntDecode(this Stream stream) {
+        stream.Required(nameof(stream));
+        return ILIntHelpers.ILIntDecode(() => stream.ReadSingleByte());
+    }
 
-        /// <summary>Encode the value as an ILInt, outputting the bytes to the stream.</summary>
-        /// <param name="stream">The stream to receive encoded bytes</param>
-        /// <param name="value">The value.</param>
-        /// <returns>The provided stream to allow call chaining.</returns>
-        public static Stream ILIntEncode(this Stream stream, ulong value) {
-            value.ILIntEncode(stream.Required(nameof(stream)).WriteByte);
-            return stream;
-        }
+    /// <summary>Encode the value as an ILInt, outputting the bytes to the stream.</summary>
+    /// <param name="stream">The stream to receive encoded bytes</param>
+    /// <param name="value">The value.</param>
+    /// <returns>The provided stream to allow call chaining.</returns>
+    public static Stream ILIntEncode(this Stream stream, ulong value) {
+        value.ILIntEncode(stream.Required(nameof(stream)).WriteByte);
+        return stream;
+    }
 
-        /// <summary>Reads a single byte from the streams trying up to 3 times.</summary>
-        /// <param name="s">The stream to read from.</param>
-        /// <returns>Read byte.</returns>
-        /// <exception cref="TooFewBytesException">After 3 tries no byte could be read.</exception>
-        public static byte ReadSingleByte(this Stream s) {
-            s.Required(nameof(s));
-            var bytes = new byte[1];
-            var retries = 3;
-            while (retries-- > 0) {
-                if (s.Read(bytes, 0, 1) == 1)
-                    return bytes[0];
-                Thread.Sleep(100);
-            }
-            throw new TooFewBytesException();
+    /// <summary>Reads a single byte from the streams trying up to 3 times.</summary>
+    /// <param name="s">The stream to read from.</param>
+    /// <returns>Read byte.</returns>
+    /// <exception cref="TooFewBytesException">After 3 tries no byte could be read.</exception>
+    public static byte ReadSingleByte(this Stream s) {
+        s.Required(nameof(s));
+        var bytes = new byte[1];
+        var retries = 3;
+        while (retries-- > 0) {
+            if (s.Read(bytes, 0, 1) == 1)
+                return bytes[0];
+            Thread.Sleep(100);
         }
+        throw new TooFewBytesException();
     }
 }

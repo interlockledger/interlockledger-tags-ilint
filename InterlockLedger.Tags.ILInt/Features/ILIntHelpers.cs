@@ -30,28 +30,25 @@
 //
 // ******************************************************************************************************************************
 
-using System;
+namespace InterlockLedger.Tags;
 
-namespace InterlockLedger.Tags
+public static class ILIntHelpers
 {
-    public static class ILIntHelpers
-    {
-        public const int ILINT_BASE = 0xF8;
-        public const ulong ILINT_MAX = ulong.MaxValue - ILINT_BASE;
+    public const int ILINT_BASE = 0xF8;
+    public const ulong ILINT_MAX = ulong.MaxValue - ILINT_BASE;
 
-        /// <summary>Decodes an ILInt from bytes provided by a functor.</summary>
-        /// <param name="readByte">The byte reading functor.</param>
-        /// <returns>Decoded ILInt value.</returns>
-        public static ulong ILIntDecode(Func<byte> readByte) {
-            readByte.Required(nameof(readByte));
-            ulong value = 0;
-            var nextByte = readByte();
-            if (nextByte < ILINT_BASE)
-                return nextByte;
-            var size = nextByte - ILINT_BASE + 1;
-            while (size-- > 0)
-                value = (value << 8) + readByte();
-            return value > ILINT_MAX ? 0 : value + ILINT_BASE;
-        }
+    /// <summary>Decodes an ILInt from bytes provided by a functor.</summary>
+    /// <param name="readByte">The byte reading functor.</param>
+    /// <returns>Decoded ILInt value.</returns>
+    public static ulong ILIntDecode(Func<byte> readByte) {
+        readByte.Required(nameof(readByte));
+        ulong value = 0;
+        var nextByte = readByte();
+        if (nextByte < ILINT_BASE)
+            return nextByte;
+        var size = nextByte - ILINT_BASE + 1;
+        while (size-- > 0)
+            value = (value << 8) + readByte();
+        return value > ILINT_MAX ? 0 : value + ILINT_BASE;
     }
 }

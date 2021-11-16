@@ -32,27 +32,25 @@
 
 using NUnit.Framework;
 
-namespace InterlockLedger.Tags
-{
+namespace InterlockLedger.Tags;
 
-    [TestFixture]
-    public class ILIntTests
-    {
-        [TestCase((ulong)1)]
-        [TestCase((ulong)128)]
-        [TestCase((ulong)247)]
-        [TestCase((ulong)248)]
-        [TestCase((ulong)249)]
-        [TestCase((ulong)503)]
-        [TestCase((ulong)505)]
-        [TestCase((ulong)66041)]
-        [TestCase((ulong)16843257)]
-        [TestCase((ulong)4311810553)]
-        [TestCase((ulong)1103823438329)]
-        [TestCase((ulong)282578800148985)]
-        [TestCase((ulong)72057594037928183)]
-        [TestCase((ulong)72340172838076921)]
-        [TestCase(18446744073709551615)]
-        public void AsILIntILIntDecode(ulong value) => Assert.AreEqual(value, value.AsILInt().ILIntDecode());
-    }
+[TestFixture]
+public class ILIntTests
+{
+    [TestCase((ulong)1)]
+    [TestCase((ulong)128)]
+    [TestCase((ulong)247)]
+    [TestCase((ulong)248)]
+    [TestCase((ulong)249)]
+    [TestCase((ulong)503)]
+    [TestCase((ulong)505)]
+    [TestCase((ulong)66041)]
+    [TestCase((ulong)16843257)]
+    [TestCase((ulong)4311810553)]
+    [TestCase((ulong)1103823438329)]
+    [TestCase((ulong)282578800148985)]
+    [TestCase((ulong)72057594037928183)]
+    [TestCase((ulong)72340172838076921)]
+    [TestCase(18446744073709551615)]
+    public void AsILIntILIntDecode(ulong value) => Assert.AreEqual(value, value.AsILInt().ILIntDecode());
 }
