@@ -13,9 +13,9 @@
         <RepositoryUrl>https://github.com/interlockledger/interlockledger-tags-ilint.git</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <PackageReleaseNotes>Moving to .NET 6.0/C# 10 - Upgrading to InterlockLedger.Commons v2.0.0</PackageReleaseNotes>
+        <PackageReleaseNotes>Upgrading to InterlockLedger.Commons v2.0.1</PackageReleaseNotes>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
-        <Version>5.0.0</Version>
+        <Version>5.0.1</Version>
         <RootNamespace>InterlockLedger.Tags</RootNamespace>
         <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
         <AnalysisLevel>6.0</AnalysisLevel>
@@ -29,7 +29,7 @@
         </None>
     </ItemGroup>
     <ItemGroup>
-      <PackageReference Include="InterlockLedger.Commons" Version="2.0.0" />
+      <PackageReference Include="InterlockLedger.Commons" Version="2.0.1" />
     </ItemGroup>
     <Target Name="PublishLocally" AfterTargets="Pack" Condition="Exists('$(INTERLOCK_LOCAL_NUGETS_FOLDER)')">
         <ItemGroup>
