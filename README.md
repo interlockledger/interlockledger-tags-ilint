@@ -1,4 +1,4 @@
-![.NET Core](https://github.com/interlockledger/interlockledger-tags-ilint/workflows/.NET%20Core/badge.svg)
+[![.NET](https://github.com/interlockledger/interlockledger-tags-ilint/actions/workflows/dotnetcore.yml/badge.svg)](https://github.com/interlockledger/interlockledger-tags-ilint/actions/workflows/dotnetcore.yml)
 
 # InterlockLedger.Tags.ILInt Library
 
