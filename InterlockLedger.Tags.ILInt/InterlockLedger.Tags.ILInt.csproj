@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
@@ -15,10 +15,10 @@
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageReleaseNotes>Upgrading to InterlockLedger.Commons v2.0.1</PackageReleaseNotes>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
-        <Version>5.0.1</Version>
+        <Version>5.0.2</Version>
         <RootNamespace>InterlockLedger.Tags</RootNamespace>
         <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-        <AnalysisLevel>6.0</AnalysisLevel>
+        <AnalysisLevel>preview</AnalysisLevel>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
@@ -29,8 +29,14 @@
         </None>
     </ItemGroup>
     <ItemGroup>
-      <PackageReference Include="InterlockLedger.Commons" Version="2.0.1" />
+      <PackageReference Include="InterlockLedger.Commons" Version="3.0.1" />
     </ItemGroup>
+    <Target Name="TagSources">
+        <Exec Command="git tag v$(Version)" ContinueOnError="true" StandardErrorImportance="low" StandardOutputImportance="low" IgnoreExitCode="true" />
+        <Message Importance="high" Text="Recent tags:" />
+        <Exec Command="git tag --sort=-creatordate | grep v | head -n 1" ContinueOnError="true" StandardErrorImportance="high" StandardOutputImportance="high" IgnoreExitCode="true" />
+    </Target>
+    
     <Target Name="PublishLocally" AfterTargets="Pack" Condition="Exists('$(INTERLOCK_LOCAL_NUGETS_FOLDER)')">
         <ItemGroup>
             <NugetPackages Include="$(PackageOutputAbsolutePath)\*.nupkg" />
@@ -38,4 +44,13 @@
         <Message Importance="high" Text="Publish to Local Nugets Folder '$(INTERLOCK_LOCAL_NUGETS_FOLDER)'" />
         <Copy DestinationFolder="$(INTERLOCK_LOCAL_NUGETS_FOLDER)" SourceFiles="@(NugetPackages)" ContinueOnError="true" SkipUnchangedFiles="false" />
     </Target>
+
+    <Target Name="NugetOrg" Condition="'$(Configuration)'=='Release'" DependsOnTargets="Pack">
+        <PropertyGroup>
+            <NugetPackage>$(PackageOutputAbsolutePath)$(PackageId).$(Version).nupkg</NugetPackage>
+        </PropertyGroup>
+        <Message Importance="high" Text="Pushing $(NugetPackage)" Condition="Exists('$(NugetPackage)')" />
+        <Exec Command="dotnet nuget push --skip-duplicate -s nuget.org $(NugetPackage)" ContinueOnError="true" StandardErrorImportance="high" StandardOutputImportance="high" IgnoreExitCode="true" Condition="Exists('$(NugetPackage)')" />
+    </Target>
+
 </Project>
