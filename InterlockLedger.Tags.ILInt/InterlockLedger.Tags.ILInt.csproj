@@ -1,7 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>net7.0</TargetFramework>
         <LangVersion>preview</LangVersion>
         <Authors>Rafael Teixeira</Authors>
         <Company>InterlockLedger Network</Company>
@@ -13,9 +13,9 @@
         <RepositoryUrl>https://github.com/interlockledger/interlockledger-tags-ilint.git</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <PackageReleaseNotes>Upgrading to InterlockLedger.Commons v2.0.1</PackageReleaseNotes>
+        <PackageReleaseNotes>.NET 7</PackageReleaseNotes>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
-        <Version>5.0.2</Version>
+        <Version>6.0.0</Version>
         <RootNamespace>InterlockLedger.Tags</RootNamespace>
         <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
         <AnalysisLevel>preview</AnalysisLevel>
@@ -29,7 +29,7 @@
         </None>
     </ItemGroup>
     <ItemGroup>
-      <PackageReference Include="InterlockLedger.Commons" Version="3.0.1" />
+      <PackageReference Include="InterlockLedger.Commons" Version="4.0.0" />
     </ItemGroup>
     <Target Name="TagSources">
         <Exec Command="git tag v$(Version)" ContinueOnError="true" StandardErrorImportance="low" StandardOutputImportance="low" IgnoreExitCode="true" />
