@@ -15,7 +15,7 @@
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageReleaseNotes>Upgrade InterlockLedger.Commons with breaking changes</PackageReleaseNotes>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
-        <Version>8.3.0</Version>
+        <Version>8.4.0</Version>
         <RootNamespace>InterlockLedger.Tags</RootNamespace>
         <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
         <AnalysisLevel>preview</AnalysisLevel>
