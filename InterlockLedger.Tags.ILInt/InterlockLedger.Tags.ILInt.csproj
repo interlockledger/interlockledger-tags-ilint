@@ -29,7 +29,7 @@
         </None>
     </ItemGroup>
     <ItemGroup>
-      <PackageReference Include="InterlockLedger.Commons" Version="8.0.0" />
+      <PackageReference Include="InterlockLedger.Commons" Version="8.1.0" />
     </ItemGroup>
     <Target Name="TagSources">
         <Exec Command="git tag v$(Version)" ContinueOnError="true" StandardErrorImportance="low" StandardOutputImportance="low" IgnoreExitCode="true" />
