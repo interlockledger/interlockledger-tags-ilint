@@ -7,7 +7,7 @@
         <Company>InterlockLedger Network</Company>
         <Product>InterlockLedger</Product>
         <Description>This library implements the basic ILInt (InterlockLedger Variable-Length-Encoded Unsigned Long Integer) encoding/decoding.</Description>
-        <Copyright>Copyright (c) 2017-2021 InterlockLedger Network</Copyright>
+        <Copyright>Copyright (c) 2017-2022 InterlockLedger Network</Copyright>
         <PackageLicenseUrl></PackageLicenseUrl>
         <PackageProjectUrl>https://interlockledger.network/</PackageProjectUrl>
         <RepositoryUrl>https://github.com/interlockledger/interlockledger-tags-ilint.git</RepositoryUrl>
@@ -15,7 +15,7 @@
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageReleaseNotes>Upgrade InterlockLedger.Commons with breaking changes</PackageReleaseNotes>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
-        <Version>8.1.0</Version>
+        <Version>8.2.0</Version>
         <RootNamespace>InterlockLedger.Tags</RootNamespace>
         <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
         <AnalysisLevel>preview</AnalysisLevel>
@@ -29,7 +29,7 @@
         </None>
     </ItemGroup>
     <ItemGroup>
-      <PackageReference Include="InterlockLedger.Commons" Version="6.1.0" />
+      <PackageReference Include="InterlockLedger.Commons" Version="7.0.0" />
     </ItemGroup>
     <Target Name="TagSources">
         <Exec Command="git tag v$(Version)" ContinueOnError="true" StandardErrorImportance="low" StandardOutputImportance="low" IgnoreExitCode="true" />
