@@ -34,11 +34,9 @@ using System.Buffers;
 
 namespace InterlockLedger.Tags;
 
-public class MockBufferWriter : IBufferWriter<byte>
+public class MockBufferWriter(byte[] memory) : IBufferWriter<byte>
 {
-    public MockBufferWriter(byte[] memory) => Memory = memory.Required(nameof(memory));
-
-    public byte[] Memory { get; }
+    public byte[] Memory { get; } = memory.Required(nameof(memory));
     public int Position { get; private set; } = 0;
 
     public void Advance(int count) => Position += count;

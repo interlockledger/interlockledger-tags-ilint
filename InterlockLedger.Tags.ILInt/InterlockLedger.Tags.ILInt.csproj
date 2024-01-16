@@ -1,36 +1,43 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <LangVersion>preview</LangVersion>
         <Authors>Rafael Teixeira</Authors>
         <Company>InterlockLedger Network</Company>
         <Product>InterlockLedger</Product>
         <Description>This library implements the basic ILInt (InterlockLedger Variable-Length-Encoded Unsigned Long Integer) encoding/decoding.</Description>
-        <Copyright>Copyright (c) 2017-2022 InterlockLedger Network</Copyright>
+        <Copyright>Copyright (c) 2017-2024 InterlockLedger Network</Copyright>
         <PackageLicenseUrl></PackageLicenseUrl>
         <PackageProjectUrl>https://interlockledger.network/</PackageProjectUrl>
         <RepositoryUrl>https://github.com/interlockledger/interlockledger-tags-ilint.git</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <PackageReleaseNotes>Upgrade InterlockLedger.Commons with breaking changes</PackageReleaseNotes>
+        <PackageReleaseNotes>Moving to .NET 8.0</PackageReleaseNotes>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
-        <Version>12.0.0</Version>
+        <Version>13.0.0</Version>
         <RootNamespace>InterlockLedger.Tags</RootNamespace>
         <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
         <AnalysisLevel>preview</AnalysisLevel>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
     <ItemGroup>
+        <None Include="..\README.md">
+          <PackagePath>\</PackagePath>
+          <Pack>True</Pack>
+        </None>
         <None Include="..\LICENSE">
             <Pack>True</Pack>
             <PackagePath></PackagePath>
         </None>
     </ItemGroup>
+
     <ItemGroup>
-      <PackageReference Include="InterlockLedger.Commons" Version="12.0.0" />
+        <ProjectReference Include="..\..\interlockledger-commons\InterlockLedger.Commons\InterlockLedger.Commons.csproj" />
     </ItemGroup>
+    
     <Target Name="TagSources">
         <Exec Command="git tag v$(Version)" ContinueOnError="true" StandardErrorImportance="low" StandardOutputImportance="low" IgnoreExitCode="true" />
         <Message Importance="high" Text="Recent tags:" />
