@@ -13,9 +13,9 @@
         <RepositoryUrl>https://github.com/interlockledger/interlockledger-tags-ilint.git</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <PackageReleaseNotes>Moving to .NET 8.0</PackageReleaseNotes>
+        <PackageReleaseNotes>Moving to InterlockLedger.Commons v17.0.1</PackageReleaseNotes>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
-        <Version>13.0.0</Version>
+        <Version>14.0.0</Version>
         <RootNamespace>InterlockLedger.Tags</RootNamespace>
         <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
         <AnalysisLevel>preview</AnalysisLevel>
@@ -33,11 +33,10 @@
             <PackagePath></PackagePath>
         </None>
     </ItemGroup>
-
     <ItemGroup>
-        <ProjectReference Include="..\..\interlockledger-commons\InterlockLedger.Commons\InterlockLedger.Commons.csproj" />
+      <PackageReference Include="InterlockLedger.Commons" Version="17.0.1" />
     </ItemGroup>
-    
+   
     <Target Name="TagSources">
         <Exec Command="git tag v$(Version)" ContinueOnError="true" StandardErrorImportance="low" StandardOutputImportance="low" IgnoreExitCode="true" />
         <Message Importance="high" Text="Recent tags:" />
@@ -56,8 +55,8 @@
         <PropertyGroup>
             <NugetPackage>$(PackageOutputAbsolutePath)$(PackageId).$(Version).nupkg</NugetPackage>
         </PropertyGroup>
-        <Message Importance="high" Text="Pushing $(NugetPackage)" Condition="Exists('$(NugetPackage)')" />
-        <Exec Command="dotnet nuget push --skip-duplicate -s nuget.org $(NugetPackage)" ContinueOnError="true" StandardErrorImportance="high" StandardOutputImportance="high" IgnoreExitCode="true" Condition="Exists('$(NugetPackage)')" />
+        <Message Importance="high" Text="Pushing $(NugetPackage)" Condition="Exists('$(NugetPackage)') and '$(NUGET_API_KEY)'!=''" />
+        <Exec Command="dotnet nuget push --skip-duplicate -s nuget.org -k $(NUGET_API_KEY) $(NugetPackage)" ContinueOnError="true" StandardErrorImportance="high" StandardOutputImportance="high" IgnoreExitCode="true" Condition="Exists('$(NugetPackage)') and '$(NUGET_API_KEY)'!=''" />
     </Target>
 
 </Project>

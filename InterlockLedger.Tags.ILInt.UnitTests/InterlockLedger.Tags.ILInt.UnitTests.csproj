@@ -15,14 +15,13 @@
         <PackageReference Include="MSTest.TestFramework" Version="3.1.1" />
         <PackageReference Include="NUnit" Version="3.14.0" />
         <PackageReference Include="NUnit3TestAdapter" Version="4.5.0">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\interlockledger-commons\InterlockLedger.Commons\InterlockLedger.Commons.csproj" />
-      <ProjectReference Include="..\InterlockLedger.Tags.ILInt\InterlockLedger.Tags.ILInt.csproj" />
+        <ProjectReference Include="..\InterlockLedger.Tags.ILInt\InterlockLedger.Tags.ILInt.csproj" />
     </ItemGroup>
     <Target Name="TagSources" />
     <Target Name="NugetOrg" />
