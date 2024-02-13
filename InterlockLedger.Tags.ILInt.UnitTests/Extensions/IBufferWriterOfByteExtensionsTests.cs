@@ -56,7 +56,7 @@ public class IBufferWriterOfByteExtensionsTests
     public byte[] ILIntEncodeToIBufferWriter(ulong value) {
         var result = new MockBufferWriter(new byte[value.ILIntSize()]);
         result.ILIntEncode(value);
-        Assert.AreEqual(result.Memory.Length, result.Position);
+        Assert.That(result.Position, Is.EqualTo(result.Memory.Length));
         return result.Memory;
     }
 }

@@ -52,5 +52,5 @@ public class ILIntTests
     [TestCase((ulong)72057594037928183)]
     [TestCase((ulong)72340172838076921)]
     [TestCase(18446744073709551615)]
-    public void AsILIntILIntDecode(ulong value) => Assert.AreEqual(value, value.AsILInt().ILIntDecode());
+    public void AsILIntILIntDecode(ulong value) => Assert.That(value.AsILInt().ILIntDecode(), Is.EqualTo(value));
 }
